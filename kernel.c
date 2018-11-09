@@ -65,12 +65,21 @@ void term_putchar_at(const char c, const uint8_t color,
 
 static void term_putchar(const char c)
 {
-	term_putchar_at(c, term.color, term.column, term.row);
-	if (++term.column == VGA_WIDTH) {
+	if (c == '\n') {
+		term.row++;
 		term.column = 0;
-		if (++term.row == VGA_HEIGHT)
-			term.row = 0;
 	}
+	else {
+		term_putchar_at(c, term.color, term.column, term.row);
+		term.column++;
+	}
+	if (term.column >= VGA_WIDTH)
+	{
+		term.column = 0;
+		term.row++;
+	}
+	if (term.row >= VGA_WIDTH)
+		term.row = 0;
 }
 
 void term_write(const char *str, const size_t size)
