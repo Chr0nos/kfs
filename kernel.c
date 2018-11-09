@@ -15,13 +15,18 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color)
 	return (uint16_t)uc | ((uint16_t)color << 8);
 }
 
-static size_t strlen(const char *str)
+size_t strlen(const char *str)
 {
 	size_t len;
 
 	for (len = 0; str[len]; len++)
 		;
 	return len;
+}
+
+static bool isprint(const char c)
+{
+	return ((c >= 040) && (c <= 0176));
 }
 
 static void		term_clear(const uint16_t color)
@@ -68,6 +73,25 @@ static void term_putchar(const char c)
 		term.row = 0;
 }
 
+void	term_puts_rainbow(const char *str)
+{
+	size_t			si;
+	uint8_t			color;
+	const uint8_t	color_origin = term.color;
+
+	color = VGA_COLOR_BLUE;
+	for (si = 0; str[si]; si++) {
+		if (isprint(str[si])) {
+			color++;
+			term.color = color;
+			term_putchar(str[si]);
+			if (color >= VGA_COLOR_WHITE)
+				color = VGA_COLOR_BLUE;
+		}
+	}
+	term.color = color_origin;
+}
+
 void term_write(const char *str, const size_t size)
 {
 	size_t		i;
@@ -78,16 +102,15 @@ void term_write(const char *str, const size_t size)
 
 void term_putstr(const char *str)
 {
-	term_write(str, strlen(str));
+	while (*str)
+		term_putchar(*(str++));
 }
 
 void kernel_main(void)
 {
-	/* Initialize terminal interface */
 	term_init();
-
-	/* Newline support is left as an exercise. */
-	term_putstr("Hello, kernel World!\n");
+	term_putstr("Hello World!\n");
 	term.color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	term_putstr("I'm a green line !\n");
+	term_puts_rainbow("I'm a multicolor line ! it's something !\n");
 }
