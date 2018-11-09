@@ -2,18 +2,21 @@ CCASM=i686-elf-as
 CC=i686-elf-gcc
 CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror
 
-all:
-	echo nope
+all: kernel.bin
 
 boot.o:
 	$(CCASM) boot.s -o boot.o
 
-kernel.o:
-	$(CC) $(CFLAGS) -c kernel.c -o kernel.o
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 kernel.bin: boot.o kernel.o
-	$(CC) -T linker.ld -o kernel.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
+	$(CC) -T linker.ld -o kernel.bin boot.o kernel.o -lgcc -nostdlib
 
+clean:
+	$(RM) boot.o kernel.o
 
-fclean:
+fclean: clean
 	$(RM) boot
+
+re: fclean

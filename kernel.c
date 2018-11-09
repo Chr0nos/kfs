@@ -90,7 +90,7 @@ void kernel_main(void)
 {
 	/* Initialize terminal interface */
 	term_init();
- 
+
 	/* Newline support is left as an exercise. */
 	term_putstr("Hello, kernel World!\n");
 }
