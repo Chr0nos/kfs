@@ -13,10 +13,6 @@
 # error "This tutorial needs to be compiled with a ix86-elf compiler"
 #endif
 
-#define	VGA_WIDTH		80
-#define VGA_HEIGHT		25
-#define VGA_MAX			VGA_WIDTH * VGA_HEIGHT
-
 static struct terminal		term;
 
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg)

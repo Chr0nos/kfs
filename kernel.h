@@ -1,5 +1,8 @@
 #ifndef KERNEL_H
 # define KERNEL_H
+# define VGA_WIDTH		80
+# define VGA_HEIGHT		25
+# define VGA_MAX		VGA_WIDTH * VGA_HEIGHT
 
 /* Hardware text mode color constants. */
 enum vga_color {
