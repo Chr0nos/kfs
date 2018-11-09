@@ -3,16 +3,6 @@
 #include <stdint.h>
 #include "kernel.h"
 
-/* Check if the compiler thinks you are targeting the wrong operating system. */
-#ifdef __linux__
-# error "You are not using a cross-compiler, you will most certainly run into trouble"
-#endif
-
-/* This tutorial will only work for the 32-bit ix86 targets. */
-#ifndef __i386__
-# error "This tutorial needs to be compiled with a ix86-elf compiler"
-#endif
-
 static struct terminal		term;
 
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg)
@@ -98,4 +88,6 @@ void kernel_main(void)
 
 	/* Newline support is left as an exercise. */
 	term_putstr("Hello, kernel World!\n");
+	term.color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
+	term_putstr("I'm a green line !\n");
 }
