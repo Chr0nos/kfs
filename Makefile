@@ -1,6 +1,6 @@
 CCASM=i686-elf-as
 CC=i686-elf-gcc
-CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra -Weverything
+CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra -Werror
 
 all:
 	echo nope
