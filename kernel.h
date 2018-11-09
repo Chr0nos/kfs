@@ -21,11 +21,15 @@ enum vga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
+#pragma pack(push, 1)
+
 struct terminal {
 	size_t		row;
 	size_t		column;
 	uint8_t		color;
 	uint16_t	*buffer;
 };
+
+#pragma pack(pop)
 
 #endif

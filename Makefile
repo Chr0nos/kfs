@@ -1,6 +1,6 @@
 CCASM=i686-elf-as
 CC=i686-elf-gcc
-CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror
+CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wpedantic -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
 
 all: kernel.bin
 
@@ -19,4 +19,4 @@ clean:
 fclean: clean
 	$(RM) boot
 
-re: fclean
+re: fclean all
