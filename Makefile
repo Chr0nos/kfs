@@ -4,10 +4,10 @@ CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wpedantic -Wsign-compa
 
 all: kernel.bin
 
-boot.o:
-	$(CCASM) boot.s -o boot.o
+boot.o: srcs/boot.s
+	$(CCASM) $< -o boot.o
 
-%.o: %.c
+%.o: srcs/%.c
 	$(CC) $(CFLAGS) -c $<
 
 kernel.bin: boot.o kernel.o
