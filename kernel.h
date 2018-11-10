@@ -1,4 +1,5 @@
 #ifndef KERNEL_H
+# define KERNEL_H
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 # ifdef __linux__
@@ -10,7 +11,6 @@
 #  error "This tutorial needs to be compiled with a ix86-elf compiler"
 # endif
 
-# define KERNEL_H
 # define VGA_WIDTH		80
 # define VGA_HEIGHT		25
 # define VGA_MAX		VGA_WIDTH * VGA_HEIGHT
