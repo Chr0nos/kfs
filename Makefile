@@ -37,8 +37,8 @@ kfs.img: kernel.bin
 	sleep 1
 	udisksctl mount -b $(LOOPDEV)p1
 	sudo cp -rv root/* /run/media/$(shell whoami)/KFS/
+	sudo grub-install --recheck --target=i386-pc --compress=xz $(LOOPDEV) --boot-directory=/run/media/$(shell whoami)/KFS/boot/
 	udisksctl unmount -b $(LOOPDEV)p1
-	sudo grub-install --target=i386-pc --compress=xz  --install-modules "multiboot legacycfg part_msdos ext2 terminal" $(LOOPDEV)
 	sudo losetup -d $(LOOPDEV)
 
 start: kfs.iso
