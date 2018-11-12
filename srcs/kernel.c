@@ -48,7 +48,7 @@ static void		term_init(void)
 	term_clear(vga_entry(' ', term.color));
 }
 
-void term_putchar_at(const char c, const uint8_t color,
+static inline void term_putchar_at(const char c, const uint8_t color,
 	const size_t x, const size_t y)
 {
 	term.buffer[y * VGA_WIDTH + x] = vga_entry(c, color);
