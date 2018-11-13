@@ -53,7 +53,7 @@ kfs.img: kernel.bin
 	udisksctl unmount -b $(LOOPDEV)p1
 	sudo losetup -d $(LOOPDEV)
 
-start: kfs.iso
-	qemu-system-x86_64 kfs.iso
+start: kernel.bin
+	qemu-system-x86_64 -kernel kernel.bin
 
 re: fclean all
