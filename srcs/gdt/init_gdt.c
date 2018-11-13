@@ -38,13 +38,16 @@ void encodeGdtEntry(uint8_t *target, struct gdt_descriptor source)
     target[5] = source.type;
 }
 
+// Global Description Table Registers
+static uint8_t gdtr[GDT_LENGTH] = {0};
+
 void init_gdt(void)
 {
 	size_t  i;
 	
 	for (i = 0; i < GDT_LENGTH; ++i)
         encodeGdtEntry(&gdtr[i], GDT[i]);
-	setGdt(gdtr, sizeof(gdtr));
+	_setGdt(gdtr, sizeof(gdtr));
 	// reload_CS();
-    reloadSegments();
+    _reloadSegments();
 }

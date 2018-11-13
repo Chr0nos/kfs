@@ -6,8 +6,8 @@ LOOPDEV=/dev/loop2
 SRCS_DIR=./srcs/
 SRCS_FILES=kernel.c \
 			tools.c \
-			term.c
-			# gdt/init_gdt.c
+			term.c \
+			gdt/init_gdt.c
 
 SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
@@ -24,6 +24,9 @@ all: kernel.bin
 $(BUILDDIR):
 	mkdir -pv $(BUILDDIR)/asm
 	mkdir -pv $(BUILDDIR)/gdt/asm
+
+objs:
+	@echo $(OBJS)
 
 $(BUILDDIR)/gdt/asm/%.o: srcs/gdt/asm/%.s
 	$(CCASM) $< -o $@

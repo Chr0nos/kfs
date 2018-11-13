@@ -1,6 +1,6 @@
 .section .text
 .align=16
-.global _reloadSegment
+.global _reloadSegments
 
 _reloadSegments:
    # Reload CS register containing code selector:

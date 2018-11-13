@@ -12,9 +12,6 @@ struct gdt_descriptor {
 	uint32_t type;
 };
 
-// Global Description Table Registers
-static uint8_t gdtr[GDT_LENGTH] = {0};
-
 static struct gdt_descriptor const GDT[GDT_LENGTH] = {
 	(const struct gdt_descriptor) {
 		.base = 0,
@@ -38,8 +35,9 @@ static struct gdt_descriptor const GDT[GDT_LENGTH] = {
 	}
 };
 
-void setGdt(uint8_t *gdtr, size_t size);
-void reload_CS(void);
-void reloadSegments(void);
+void _setGdt(uint8_t *gdtr, size_t size);
+// void reload_CS(void);
+void _reloadSegments(void);
+void init_gdt(void);
 
 #endif

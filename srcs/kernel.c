@@ -2,6 +2,7 @@
 #include "kernel.h"
 #include "kernel.h"
 #include "term.h"
+#include "./gdt/gdt.h"
 
 static void	print_nums(struct terminal *term)
 {
@@ -29,7 +30,7 @@ void kernel_main(void)
 
 	term_init(&term);
 
-// 	init_gdt();
+	// init_gdt();
 
 	term_putstr(&term, "Hello World!\n");
 	term.color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
