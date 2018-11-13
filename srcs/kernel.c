@@ -15,5 +15,10 @@ void kernel_main(void)
 
 	char test[30];
 	itobuf(63481, test, 30);
+	term.row = 20;
+	term.column = 40;
+	term.color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
 	term_putstr(&term, test);
+	term_putstr(&term, "Hi !");
+
 }
