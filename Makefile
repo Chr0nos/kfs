@@ -28,8 +28,8 @@ $(BUILDDIR):
 objs:
 	@echo $(OBJS)
 
-debug: kfs.img
-	sudo kvm -m 1024 -s -hda kfs.img -redir tcp:2323::23
+debug: kernel.bin
+	qemu-system-i386 -kernel kernel.bin --enable-kvm -s -S
 
 $(BUILDDIR)/gdt/asm/%.o: srcs/gdt/asm/%.s
 	$(CCASM) $< -o $@
