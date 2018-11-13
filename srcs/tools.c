@@ -28,6 +28,8 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 	if (!size)
 		return 0;
 	n = nblen(nb);
+    if (n > size)
+        n = size;
 	buf[n--] = '\0';
 	if (nb < 0) {
 		negative = true;
