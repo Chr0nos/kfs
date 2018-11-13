@@ -44,6 +44,7 @@ void		term_init(struct terminal *term);
 void	    term_puts_rainbow(struct terminal *term, const char *str);
 void        term_putstr(struct terminal *term, const char *str);
 void        term_write(struct terminal *term, const char *str, const size_t size);
+void	    term_clear(struct terminal *term, const uint16_t color);
 
 uint8_t     vga_entry_color(enum vga_color fg, enum vga_color bg);
 uint16_t    vga_entry(unsigned char uc, uint8_t color);
