@@ -28,6 +28,9 @@ $(BUILDDIR):
 objs:
 	@echo $(OBJS)
 
+debug: kfs.img
+	sudo kvm -m 1024 -s -hda kfs.img -redir tcp:2323::23
+
 $(BUILDDIR)/gdt/asm/%.o: srcs/gdt/asm/%.s
 	$(CCASM) $< -o $@
 
