@@ -1,9 +1,19 @@
-CCASM=i686-elf-as
-CC=i686-elf-gcc
+CCASM=/opt/cross/i686/bin/i686-elf-as
+CC=/opt/cross/i686/bin/i686-elf-gcc
 CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wpedantic -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
 LOOPDEV=/dev/loop2
 
+SRCS_DIR=./srcs/
+SRCS_FILES=kernel.c #irqs/io.c
+SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
+ASM_SRCS=boot.s
+
+OBJS=$(ASM_SRCS:%.s=%.o) $(SRCS:%.c=%.o)
+
 all: kernel.bin
+
+list:
+	@echo $(OBJS)
 
 boot.o: srcs/boot.s
 	$(CCASM) $< -o boot.o
@@ -11,11 +21,11 @@ boot.o: srcs/boot.s
 %.o: srcs/%.c
 	$(CC) $(CFLAGS) -c $<
 
-kernel.bin: boot.o kernel.o
-	$(CC) -T linker.ld -o kernel.bin boot.o kernel.o -lgcc -nostdlib
+kernel.bin: $(OBJS)
+	$(CC) -T linker.ld -o kernel.bin $(OBJS) -lgcc -nostdlib
 
 clean:
-	$(RM) boot.o kernel.o
+	$(RM) $(OBJS)
 
 fclean: clean
 	$(RM) boot kfs.img kfs.iso

@@ -1,4 +1,4 @@
-CORES=7
+CORES=2
 BINUTIL=binutils-2.31.tar.gz
 GCC=gcc-8.2.0.tar.gz
 INSTALL_DIR=/opt/cross/i686
