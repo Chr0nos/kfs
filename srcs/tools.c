@@ -9,6 +9,8 @@ uint32_t	nblen(int x)
 	uint32_t		len;
 
 	len = 1;
+	if (x < 0)
+		len++;
 	while ((x) && (x /= 10))
 		len++;
 	return len;
@@ -21,23 +23,24 @@ uint32_t	nblen(int x)
 uint32_t	itobuf(const int nb, char *buf, const size_t size)
 {
 	bool		negative = false;
-	size_t		p;
 	size_t		n;
+	size_t		len;
 	uint32_t	x;
 
 	if (!size)
 		return 0;
-	n = nblen(nb);
-    if (n > size) {
-        n = size;
+	len = nblen(nb);
+    if (len > size) {
+        len = size;
     }
+	n = len;
 	buf[n--] = '\0';
 	if (nb < 0) {
 		negative = true;
 		x = (uint32_t)-nb;
 	} else
 		x = (uint32_t)nb;
-	while ((x) && (n))
+	while (x)
 	{
 		buf[n] = '0' + (x % 10);
 		x /= 10;
@@ -45,7 +48,7 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 	}
 	if (negative)
 		buf[0] = '-';
-	return p;
+	return len;
 }
 
 size_t strlen(const char *str)

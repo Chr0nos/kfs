@@ -15,6 +15,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define INTMAX 2147483647
+#define INTMIN -2147483648
+
 uint32_t	itobuf(const int nb, char *buf, const size_t size);
 size_t		strlen(const char *str);
 bool    	isprint(const char c);
