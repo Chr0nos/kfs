@@ -7,7 +7,7 @@ static void	print_nums(struct terminal *term)
 {
 	char		test[30];
 	size_t		len = itobuf(42, test, 30);
-	int			digits[] = {INTMIN, 0, 42, INTMAX};
+	const int	digits[] = {INTMIN, 0, 42, INTMAX};
 	size_t		i;
 
 	term->row = 20;
