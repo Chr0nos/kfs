@@ -7,7 +7,12 @@ void kernel_main(void)
 {
 	static struct terminal		term;
 
-	term_init(&term);
+	term_init();
+
+// 	init_gdt();
+
+	term_putstr("Hello World!\n");
+
 	term_putstr(&term, "Hello World!\n");
 	term.color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	term_putstr(&term, "I'm a green line !\n");

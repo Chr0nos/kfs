@@ -8,6 +8,7 @@ SRCS_FILES=kernel.c tools.c term.c
 SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 ASM_SRCS=asm/boot.s
+
 BUILDDIR=./build
 
 OBJS=$(addprefix $(BUILDDIR)/, $(ASM_SRCS:%.s=%.o) $(SRCS_FILES:%.c=%.o))
