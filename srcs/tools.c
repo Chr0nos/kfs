@@ -36,7 +36,7 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 		x = (uint32_t)-nb;
 	} else
 		x = (uint32_t)nb;
-	while (x)
+	while ((x) && (n))
 	{
 		buf[n] = '0' + (x % 10);
 		x /= 10;
