@@ -18,7 +18,7 @@ $(BUILDDIR):
 	mkdir -pv $(BUILDDIR)/asm
 
 $(BUILDDIR)/asm/%.o: srcs/asm/%.s
-	$(CCASM) $< -o boot.o -o $@
+	$(CCASM) $< -o $@
 
 $(BUILDDIR)/%.o: srcs/%.c
 	$(CC) $(CFLAGS) -c $< -o $@

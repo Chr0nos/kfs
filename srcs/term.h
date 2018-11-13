@@ -29,7 +29,7 @@ enum vga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
-#pragma pack(push, 4)
+#pragma pack(push, 1)
 
 struct terminal {
 	size_t		row;
