@@ -4,7 +4,7 @@ CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wpedantic -Wsign-compa
 LOOPDEV=/dev/loop2
 
 SRCS_DIR=./srcs/
-SRCS_FILES=kernel.c
+SRCS_FILES=kernel.c tools.c term.c
 SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 ASM_SRCS=asm/boot.s
