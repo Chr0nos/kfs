@@ -1,13 +1,18 @@
 #include "gdt.h"
 
+static inline void kerror(const char *str)
+{
+    (void)str;
+}
+
 /**
  * \param target A pointer to the 8-byte GDT entry
  * \param source An arbitrary structure describing the GDT entry
  */
-void encodeGdtEntry(uint8_t *target, struct GDT source)
+void encodeGdtEntry(uint8_t *target, struct gdt_descriptor source)
 {
     // Check the limit to make sure that it can be encoded
-    if ((source.limit > 65536) && (source.limit & 0xFFF) != 0xFFF)) {
+    if ((source.limit > 65536) && ((source.limit & 0xfff) != 0xfff)) {
         kerror("You can't do that!");
     }
     if (source.limit > 65536) {
@@ -35,10 +40,11 @@ void encodeGdtEntry(uint8_t *target, struct GDT source)
 
 void init_gdt(void)
 {
-	int i;
+	size_t  i;
 	
-	for(i = 0; i < GDT_LENGTH; ++i)
-		encodeGdtEntry(gdtr + i * 4, GDT + (sizeof(struct gdt_descriptor) * i));
+	for (i = 0; i < GDT_LENGTH; ++i)
+        encodeGdtEntry(&gdtr[i], GDT[i]);
 	setGdt(gdtr, sizeof(gdtr));
-	reload_CS();
+	// reload_CS();
+    reloadSegments();
 }

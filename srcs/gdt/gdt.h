@@ -1,5 +1,10 @@
-#ifndef
-#define _GDT_H_
+#ifndef _GDT_H_
+# define _GDT_H_
+# include <stddef.h>
+# include <stdint.h>
+# define GDT_LENGTH 4
+
+static const uint32_t tss;
 
 struct gdt_descriptor {
 	uint32_t base;
@@ -7,37 +12,34 @@ struct gdt_descriptor {
 	uint32_t type;
 };
 
-uint8_t gdtr[4] = {0};
-struct gdt_descriptor GDT[4];
+// Global Description Table Registers
+static uint8_t gdtr[GDT_LENGTH] = {0};
 
+static struct gdt_descriptor const GDT[GDT_LENGTH] = {
+	(const struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0,
+		.type = 0
+	},
+	(const struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0xffffffff,
+		.type = 0x9a
+	},
+	(const struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0xffffffff,
+		.type = 0x92
+	},
+	(const struct gdt_descriptor) {
+		.base = (uint32_t)&tss,
+		.limit = 0x68,
+		.type = 0x89
+	}
+};
 
-static const uint32_t tss;
-static const uint32_t tss_length = 0x68;
-
-// FLAT SETUP
-GDT[0] = {
-	.base=0,
-	.limit=0,
-	.type=0
-};                     // Selector 0x00 cannot be used
-
-GDT[1] = {
-	.base=0,
-	.limit=0xffffffff,
-	.type=0x9A
-};         // Selector 0x08 will be our code, DS
-
-GDT[2] = {
-	.base=0,
-	.limit=0xffffffff,
-	.type=0x92
-};         // Selector 0x10 will be our data, CS
-
-GDT[3] = {
-	.base=&tss,
-	.limit=sizeof(tss),
-	.type=0x89
-}; // You can use LTR(0x18)
-
+void setGdt(uint8_t *gdtr, size_t size);
+void reload_CS(void);
+void reloadSegments(void);
 
 #endif

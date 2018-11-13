@@ -5,13 +5,11 @@
 
 void kernel_main(void)
 {
-	static struct terminal		term;
+	struct terminal		term;
 
-	term_init();
+	term_init(&term);
 
 // 	init_gdt();
-
-	term_putstr("Hello World!\n");
 
 	term_putstr(&term, "Hello World!\n");
 	term.color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);

@@ -1,13 +1,19 @@
 CCASM=/opt/cross/i686/bin/i686-elf-as
 CC=/opt/cross/i686/bin/i686-elf-gcc
-CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wpedantic -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
+CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
 LOOPDEV=/dev/loop2
 
 SRCS_DIR=./srcs/
-SRCS_FILES=kernel.c tools.c term.c
+SRCS_FILES=kernel.c \
+			tools.c \
+			term.c
+			# gdt/init_gdt.c
+
 SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-ASM_SRCS=asm/boot.s
+ASM_SRCS=asm/boot.s \
+		gdt/asm/load_gdt.s \
+		gdt/asm/reload_segments.s
 
 BUILDDIR=./build
 
@@ -17,6 +23,10 @@ all: kernel.bin
 
 $(BUILDDIR):
 	mkdir -pv $(BUILDDIR)/asm
+	mkdir -pv $(BUILDDIR)/gdt/asm
+
+$(BUILDDIR)/gdt/asm/%.o: srcs/gdt/asm/%.s
+	$(CCASM) $< -o $@
 
 $(BUILDDIR)/asm/%.o: srcs/asm/%.s
 	$(CCASM) $< -o $@
