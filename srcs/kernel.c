@@ -29,12 +29,11 @@ void kernel_main(void)
 	struct terminal		term;
 
 	term_init(&term);
-
-	// init_gdt();
-
 	term_putstr(&term, "Hello World!\n");
 	term.color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	term_putstr(&term, "I'm a green line !\n");
 	term_puts_rainbow(&term, "I'm a multicolor line ! it's something !\n");
 	print_nums(&term);
+
+	// init_gdt();
 }
