@@ -4,28 +4,30 @@ CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wpedantic -Wsign-compa
 LOOPDEV=/dev/loop2
 
 SRCS_DIR=./srcs/
-SRCS_FILES=kernel.c #irqs/io.c
+SRCS_FILES=kernel.c
 SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
-ASM_SRCS=boot.s
 
-OBJS=$(ASM_SRCS:%.s=%.o) $(SRCS:%.c=%.o)
+ASM_SRCS=asm/boot.s
+BUILDDIR=./build
+
+OBJS=$(addprefix $(BUILDDIR)/, $(ASM_SRCS:%.s=%.o) $(SRCS_FILES:%.c=%.o))
 
 all: kernel.bin
 
-list:
-	@echo $(OBJS)
+$(BUILDDIR):
+	mkdir -pv $(BUILDDIR)/asm
 
-boot.o: srcs/boot.s
-	$(CCASM) $< -o boot.o
+$(BUILDDIR)/asm/%.o: srcs/asm/%.s
+	$(CCASM) $< -o boot.o -o $@
 
-%.o: srcs/%.c
-	$(CC) $(CFLAGS) -c $<
+$(BUILDDIR)/%.o: srcs/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-kernel.bin: $(OBJS)
+kernel.bin: $(BUILDDIR) $(OBJS)
 	$(CC) -T linker.ld -o kernel.bin $(OBJS) -lgcc -nostdlib
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) -r $(BUILDDIR)
 
 fclean: clean
 	$(RM) boot kfs.img kfs.iso
