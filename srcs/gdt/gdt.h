@@ -12,24 +12,24 @@ struct gdt_descriptor {
 	uint32_t type;
 };
 
-static struct gdt_descriptor const GDT[GDT_LENGTH] = {
-	(const struct gdt_descriptor) {
+static struct gdt_descriptor GDT[GDT_LENGTH] = {
+	(struct gdt_descriptor) {
 		.base = 0,
 		.limit = 0,
 		.type = 0
 	},
-	(const struct gdt_descriptor) {
+	(struct gdt_descriptor) {
 		.base = 0,
 		.limit = 0xffffffff,
 		.type = 0x9a
 	},
-	(const struct gdt_descriptor) {
+	(struct gdt_descriptor) {
 		.base = 0,
 		.limit = 0xffffffff,
 		.type = 0x92
 	},
-	(const struct gdt_descriptor) {
-		.base = (uint32_t)&tss,
+	(struct gdt_descriptor) {
+		.base = 0,
 		.limit = 0x68,
 		.type = 0x89
 	}

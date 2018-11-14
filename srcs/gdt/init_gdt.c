@@ -44,7 +44,8 @@ static uint8_t gdtr[GDT_LENGTH] = {0};
 void init_gdt(void)
 {
 	size_t  i;
-	
+
+    GDT[0].base = (uint32_t)&tss;
 	for (i = 0; i < GDT_LENGTH; ++i)
         encodeGdtEntry(&gdtr[i], GDT[i]);
 	_setGdt(gdtr, sizeof(gdtr));
