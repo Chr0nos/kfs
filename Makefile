@@ -61,8 +61,8 @@ kfs.iso: kernel.bin
 
 kfs.img: kernel.bin
 	cp -v kernel.bin root/boot/kernel.bin
-	udisksctl unmount -b $(LOOPDEV) | true
-	sudo losetup -d $(LOOPDEV) |
+	udisksctl unmount -b $(LOOPDEV) || true
+	sudo losetup -d $(LOOPDEV) || true
 	touch kfs.img
 	truncate -s 8M kfs.img
 	parted --script kfs.img mklabel msdos
