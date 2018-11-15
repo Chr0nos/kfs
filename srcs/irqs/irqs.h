@@ -12,10 +12,12 @@
 #define PIC2_COMMAND	PIC2
 #define PIC2_DATA	(PIC2+1)
 #define IRQ_COUNT	16
+#define IDT_ENTRIES	256
 
 /* This exists in 'start.asm', and is used to load our IDT */
-extern void idt_load(void);
+extern void _idt_load(void);
 extern void _remap_pic(void);
+extern void _eoi(int);
 
 typedef unsigned int irq_t;
 

@@ -57,10 +57,10 @@ struct reg_itr {
  *  "Unhandled Interrupt" exception
  */
 
-struct idt_entry idt[256];
+struct idt_entry idt[IDT_ENTRIES];
 struct idt_ptr idtp;
 
-static uint32_t *interrupt_handlers[256] = {0};
+static uint32_t *interrupt_handlers[IDT_ENTRIES] = {0};
 
 /* We'll leave you to try and code this function: take the
  *  argument 'base' and split it up into a high and low 16-bits,
@@ -79,8 +79,6 @@ static void idt_set_gate(unsigned char num, unsigned long base,
 	idt[num].flags = flags;
 }
 
-
-
 static inline void register_interrupt_handler(uint8_t n, uint32_t *handler)
 {
 	interrupt_handlers[n] = handler;
@@ -88,10 +86,10 @@ static inline void register_interrupt_handler(uint8_t n, uint32_t *handler)
 
 void irq_handler(struct reg_itr regs)
 {
-	eoi(regs.int_no);
+	_eoi(regs.int_no);
 	if (interrupt_handlers[regs.int_no] != 0) {
 		// (uint32_t*)handler = interrupt_handlers[regs.int_no];
-		handler(regs);
+		// handler(regs);
 	}
 }
 
@@ -104,11 +102,11 @@ void	init_irqs(void)
 		irq8, irq9, irq10, irq11, irq12, irq13, irq14, irq15
 	};
 
-	idtp.limit = (sizeof(struct idt_entry) * 256) - 1;
-	idtp.base = &idt;
+	idtp.limit = (sizeof(struct idt_entry) * IDT_ENTRIES) - 1;
+	idtp.base = (uint32_t)&idt;
 	_remap_pic();
 	port = 32;
 	for (i = 0; i < IRQ_COUNT; i++)
 		idt_set_gate(port++, tab[i], KERNEL_SETUP_ADDR, 0x8E);
-	idt_load();
+	_idt_load();
 }

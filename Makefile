@@ -14,6 +14,8 @@ SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 ASM_SRCS=asm/boot.s \
 		irqs/irqs.s \
+		irqs/eoi.s \
+		irqs/idt_load.s \
 		gdt/asm/load_gdt.s \
 		gdt/asm/reload_segments.s
 
