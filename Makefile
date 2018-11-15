@@ -1,6 +1,6 @@
 CCASM=/opt/cross/i686/bin/i686-elf-as
 CC=/opt/cross/i686/bin/i686-elf-gcc
-CFLAGS=-std=c11 -ffreestanding -O2 -Wall -Wextra -Werror -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
+CFLAGS=-std=c11 -ffreestanding -O2 -Wpedantic -Wall -Wextra -Werror -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
 LOOPDEV=/dev/loop2
 
 SRCS_DIR=./srcs/
