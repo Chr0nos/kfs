@@ -40,7 +40,7 @@ struct terminal {
 
 #pragma pack(pop)
 
-void		term_init(struct terminal *term);
+void	term_init(struct terminal *term);
 void	    term_puts_rainbow(struct terminal *term, const char *str);
 void        term_putstr(struct terminal *term, const char *str);
 void        term_write(struct terminal *term, const char *str, const size_t size);
