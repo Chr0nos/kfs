@@ -79,17 +79,24 @@ static inline void register_interrupt_handler(uint8_t irq, irq_handler_t handler
 	interrupt_handlers[irq] = handler;
 }
 
-void irq_handler(struct reg_itr regs)
+#include "../term.h"
+static int	test(struct reg_itr *interrupt)
 {
+	struct terminal		tm;
+
+	tm.row = 20;
+	tm.column = 20;
+	term_putstr(&tm, "banana");
+	(void)interrupt;
+	return 0;
+}
+
+void	irq_handler(struct reg_itr regs)
+{
+	test(&regs);
 	_eoi(regs.int_no);
 	if (interrupt_handlers[regs.int_no] != 0)
 		interrupt_handlers[regs.int_no](&regs);
-}
-
-static int	test(struct reg_itr *interrupt)
-{
-	(void)interrupt;
-	return 0;
 }
 
 void	irqs_init(void)
