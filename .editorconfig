@@ -1,0 +1,6 @@
+[*.c]
+indent_size = 8
+indent_style = tab
+[*.h]
+indent_size = 8
+indent_style = tab
