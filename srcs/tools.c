@@ -30,9 +30,8 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 	if (!size)
 		return 0;
 	len = nblen(nb);
-    if (len > size) {
-        len = size;
-    }
+	if (len > size)
+        	len = size;
 	n = len;
 	buf[n--] = '\0';
 	if (nb < 0) {
