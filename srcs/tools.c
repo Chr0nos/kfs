@@ -30,9 +30,8 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 	if (!size)
 		return 0;
 	len = nblen(nb);
-    if (len > size) {
-        len = size;
-    }
+	if (len > size)
+        	len = size;
 	n = len;
 	buf[n--] = '\0';
 	if (nb < 0) {
@@ -70,4 +69,30 @@ bool    isdigit(const char c)
 bool    isprint(const char c)
 {
 	return ((c >= 040) && (c <= 0176));
+}
+
+void	*memset(void *dest, const int c, const size_t n)
+{
+	size_t		p;
+	const size_t	blk = INTIFY(SHORTIFY((unsigned char)c));
+
+	p = 0;
+	while ((p < n) && ((n - p) % CPU_BYTES_MAX))
+		((unsigned char *)dest)[p++] = (unsigned char)c;
+	while (p < n) {
+		*(size_t *)((size_t)dest + p) = blk;
+		p += CPU_BYTES_MAX;
+	}
+	return dest;
+}
+
+void	*memcpy(void *dest, const void *src, const size_t size)
+{
+	size_t		p;
+
+	for (p = 0; (p < size) && (size - p) % CPU_BYTES_MAX; p++)
+		((unsigned char *)dest)[p] = ((unsigned char *)src)[p];
+	for (;p < size; p += CPU_BYTES_MAX)
+		*(size_t *)((size_t)dest + p) = *(size_t *)((size_t)src + p);
+	return dest;
 }
