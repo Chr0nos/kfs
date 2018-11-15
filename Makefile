@@ -75,4 +75,7 @@ start: kernel.bin
 
 re: fclean all
 
+norme:
+	/usr/src/linux-4.18.16.arch1/scripts/checkpatch.pl -no-tree -file $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
+
 .PHONY: all re fclean clean start debug objs
