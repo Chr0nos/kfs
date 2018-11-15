@@ -86,6 +86,7 @@ static int	test(struct reg_itr *interrupt)
 
 	tm.row = 20;
 	tm.column = 20;
+	term_init(&tm);
 	term_putstr(&tm, "banana");
 	(void)interrupt;
 	return 0;

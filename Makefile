@@ -3,7 +3,7 @@ CC=/opt/cross/i686/bin/i686-elf-gcc
 CFLAGS=-std=c11 -ffreestanding -O2 -Wpedantic -Wall -Wextra -Werror -Wsign-compare -Wpadded -Wshadow=global -Wvla -Wstrict-prototypes
 LOOPDEV=/dev/loop2
 
-SRCS_DIR=./srcs/
+SRCS_DIR=./srcs
 SRCS_FILES=kernel.c \
 			tools.c \
 			term.c \

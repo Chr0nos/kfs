@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "kernel.h"
-#include "kernel.h"
 #include "term.h"
 #include "./gdt/gdt.h"
 #include "irqs/irqs.h"
