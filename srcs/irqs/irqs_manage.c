@@ -74,7 +74,8 @@ static void idt_set_gate(unsigned char num, unsigned long base,
 	idt[num].flags = flags;
 }
 
-static inline void register_interrupt_handler(uint8_t irq, irq_handler_t handler)
+static inline void register_interrupt_handler(uint8_t irq,
+					      irq_handler_t handler)
 {
 	interrupt_handlers[irq] = handler;
 }
