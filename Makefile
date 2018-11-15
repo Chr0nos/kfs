@@ -6,12 +6,14 @@ LOOPDEV=/dev/loop2
 SRCS_DIR=./srcs/
 SRCS_FILES=kernel.c \
 			tools.c \
-			term.c \
-			gdt/init_gdt.c
+			term.c
+			# gdt/init_gdt.c
+			# irqs/irqs_manage.c
 
 SRCS=$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
 ASM_SRCS=asm/boot.s \
+		# irqs/irqs.s \
 		gdt/asm/load_gdt.s \
 		gdt/asm/reload_segments.s
 
@@ -27,6 +29,7 @@ all: kernel.bin
 $(BUILDDIR):
 	mkdir -pv $(BUILDDIR)/asm
 	mkdir -pv $(BUILDDIR)/gdt/asm
+	mkdir -pv $(BUILDDIR)/irqs
 
 objs:
 	@echo $(OBJS)

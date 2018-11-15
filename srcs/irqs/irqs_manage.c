@@ -1,4 +1,5 @@
 #include "irqs.h"
+#include "../kernel.h"
 
 /* Present Ring	   Always
  * P	   DPL	   Always 01110 (14)
@@ -63,7 +64,7 @@ struct idt_ptr idtp;
 
 /* This exists in 'start.asm', and is used to load our IDT */
 extern void idt_load();
-uint32_t interrupt_handlers[256];
+static uint32_t interrupt_handlers[256];
 
 /* We'll leave you to try and code this function: take the
  *  argument 'base' and split it up into a high and low 16-bits,
@@ -74,16 +75,16 @@ uint32_t interrupt_handlers[256];
 void idt_set_gate(unsigned char num, unsigned long base,
 		  unsigned short sel, unsigned char flags)
 {
-	idt[num].base_lo = (base >> 8) 0xFF;
+	idt[num].base_lo = (base >> 8) & 0xFF;
 	idt[num].base_hi = base & 0xFF;
 	idt[num].flags = sel;
-	idt[num].alway0 = 0;
+	idt[num].always0 = 0;
 	idt[num].flags = flags;
 }
 
 
 
-void register_interrupt_handler(uint8_t n, uint32_t *handler)
+static inline void register_interrupt_handler(uint8_t n, uint32_t *handler)
 {
   interrupt_handlers[n] = handler;
 }
@@ -93,17 +94,21 @@ void irq_handler(struct reg_itr regs)
 	eoi(regs.int_no);
 	if (interrupt_handlers[regs.int_no] != 0)
 	{
-		(* uint32_t) handler = interrupt_handlers[regs.int_no];
+		// (uint32_t*)handler = interrupt_handlers[regs.int_no];
 		handler(regs);
 	}
 }
+
+extern void (*irq15)(void);
 
 void	init_irqs(void)
 {
 	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
 	idtp.base = &idt;
 	memset(&idt, 0, sizeof(struct idt_entry) * 256);
-	
+
+	remap_pic();
+
 	idt_set_gate(32, irq0, KERNEL_SETUP_ADDR, 0x8E);
 	idt_set_gate(33, irq1, KERNEL_SETUP_ADDR, 0x8E);
 	idt_set_gate(34, irq2, KERNEL_SETUP_ADDR, 0x8E);

@@ -1,4 +1,4 @@
-
+.extern irq_handler
 .macro IRQ arg1 arg2
 .global irq\arg1
   irq\arg1:
@@ -31,21 +31,21 @@ irq_common_stub:
    mov %ds, %ax		# Lower 16-bits of eax = ds.
    push %eax		# save the data segment descriptor
 
-   movl 0x10, %ax		# load the kernel data segment descriptor
-   movl %ax, %ds
-   movl %ax, %es
-   movl %ax, %fs
-   movl %ax, %gs
+   mov 0x10, %ax		# load the kernel data segment descriptor
+   mov %ax, %ds
+   mov %ax, %es
+   mov %ax, %fs
+   mov %ax, %gs
 
    call irq_handler
 
    pop %ebx		# reload the original data segment descriptor
-   movl %bx, %ds
-   movl %bx, %es
-   movl %bx, %fs
-   movl %bx, %gs
+   mov %bx, %ds
+   mov %bx, %es
+   mov %bx, %fs
+   mov %bx, %gs
 
    popa			# Pops edi,esi,ebp...
-   add 8(%esp)		# Cleans up the pushed error code and pushed ISR number
+   add %esp, 8		# Cleans up the pushed error code and pushed ISR number
    sti
    iret			# pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
