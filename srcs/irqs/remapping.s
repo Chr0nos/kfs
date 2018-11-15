@@ -1,12 +1,12 @@
 # reinitialize the PIC controllers, giving them specified vector offsets
 #   rather than 8h and 70h, as configured by default 
  
-.equ PIC1		0x20		/* IO base address for master PIC */
-.equ PIC2		0xA0		/* IO base address for slave PIC */
-.equ PIC1_COMMAND	$PIC1
-.equ PIC1_DATA		$PIC1 + 1
-.equ PIC2_COMMAND	$PIC2
-.equ PIC2_DATA		$PIC2 + 1
+.equ PIC1,		0x20		/* IO base address for master PIC */
+.equ PIC2,		0xA0		/* IO base address for slave PIC */
+.equ PIC1_COMMAND,	PIC1
+.equ PIC1_DATA,		PIC1 + 1
+.equ PIC2_COMMAND,	PIC2
+.equ PIC2_DATA,		PIC2 + 1
 .equ ICW1_ICW4,		0x01		# ICW4 (not) needed 
 .equ ICW1_SINGLE,	0x02		# Single (cascade) mode 
 .equ ICW1_INTERVAL4,	0x04		# Call address interval 4 (8) 
@@ -27,22 +27,57 @@
 .text
 .global _remap_pic
 
+_wait_io:
+    mov 0, %al
+    mov 0x80, %dx
+	outb %al, %dx
+    ret
+
 _remap_pic:
-	outb $PIC1_COMMAND, $ICW1_INIT			# starts the initialization sequence (in cascade mode)
-	outb $0, $0x80
-	outb $PIC1_DATA, $OFFSET_1			# ICW2: Master PIC vector offset
-	outb $0, $0x80
-	outb $PIC2_DATA, $OFFSET_2			# ICW2: Slave PIC vector offset
-	outb $0, $0x80
-	outb $PIC1_DATA, $4				# ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
-	outb $0, $0x80 
-	outb $PIC2_DATA, $2				# ICW3: tell Slave PIC its cascade identity (0000 0010)
-	outb $0, $0x80
+    mov $PIC1_COMMAND, %al
+    mov $ICW1_INIT, %dx
+	outb %al, %dx			# starts the initialization sequence (in cascade mode)
+    call _wait_io
+
+    mov $PIC1_DATA, %al
+    mov $OFFSET_1, %dx
+	outb %al, %dx			# ICW2: Master PIC vector offset
+    call _wait_io
+
+    mov $PIC2_DATA, %al
+	mov $OFFSET_2, %dx
+    outb %al, %dx			# ICW2: Slave PIC vector offset
+    call _wait_io
+
+    mov $PIC2_DATA, %al
+	mov 4, %dx
+	outb %al, %dx				# ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
+    call _wait_io
+
+    mov $PIC2_DATA, %al
+	mov 2, %dx
+	outb %al, %dx				# ICW3: tell Slave PIC its cascade identity (0000 0010)
+    call _wait_io
  
-	outb $PIC1_DATA, $ICW4_8086
-	outb $0, $0x80
-	outb $PIC2_DATA, $ICW4_8086
-	outb $0, $0x80
- 
-	outb $PIC1_DATA, $0   # restore saved masks.
-	outb $PIC2_DATA, $0
+    mov $PIC1_DATA, %al
+    mov $ICW4_8086, %dx
+    outb %al, %dx
+    call _wait_io
+
+    mov $PIC2_DATA, %al
+    mov $ICW4_8086, %dx
+    outb %al, %dx
+    call _wait_io
+
+    # restore saved masks.
+    mov $PIC1_DATA, %al
+    mov 0, %dx
+    outb %al, %dx
+    call _wait_io
+
+    mov $PIC2_DATA, %al
+    mov 0, %dx
+    outb %al, %dx
+    call _wait_io
+
+    ret
