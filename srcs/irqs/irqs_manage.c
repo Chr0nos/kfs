@@ -1,12 +1,11 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #include "irqs.h"
 #include "../kernel.h"
 
 /* Present Ring	   Always
  * P	   DPL	   Always 01110 (14)
  * 1	   00      01110 => 0x8E
- */ 
-
-/*
+ *
  *         | Protected-mode kernel  |
  *100000   +------------------------+
  *         | I/O memory hole        |
@@ -32,38 +31,35 @@
 
 #define KERNEL_SETUP_ADDR 0x08
 
-struct idt_entry
-{
-    unsigned short base_lo;
-    unsigned short sel;        /* Our kernel segment goes here! */
-    unsigned char always0;     /* This will ALWAYS be set to 0! */
-    unsigned char flags;       /* Set using the above table! */
-    unsigned short base_hi;
-} __attribute__((packed));
+struct idt_entry {
+	unsigned short base_lo;
+	unsigned short sel;        /* Our kernel segment goes here! */
+	unsigned char always0;     /* This will ALWAYS be set to 0! */
+	unsigned char flags;       /* Set using the above table! */
+	unsigned short base_hi;
+} __packed;
 
-struct idt_ptr
-{
-    unsigned short limit;
-    unsigned int base;
-} __attribute__((packed));
+struct idt_ptr {
+	unsigned short limit;
+	unsigned int base;
+} __packed;
 
 // probably missing info
-struct reg_itr
-{
-    unsigned short int_no;
-} __attribute__((packed));
+struct reg_itr {
+	unsigned short int_no;
+} __packed;
 
 /* Declare an IDT of 256 entries. Although we will only use the
-*  first 32 entries, the rest exists as a bit
-*  of a trap. If any undefined IDT entry is hit, it normally
-*  will cause an "Unhandled Interrupt" exception. Any descriptor
-*  for which the 'presence' bit is cleared (0) will generate an
-*  "Unhandled Interrupt" exception */
+ *  first 32 entries, the rest exists as a bit
+ *  of a trap. If any undefined IDT entry is hit, it normally
+ *  will cause an "Unhandled Interrupt" exception. Any descriptor
+ *  for which the 'presence' bit is cleared (0) will generate an
+ *  "Unhandled Interrupt" exception
+ */
+
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 
-/* This exists in 'start.asm', and is used to load our IDT */
-extern void idt_load();
 static uint32_t interrupt_handlers[256];
 
 /* We'll leave you to try and code this function: take the
@@ -71,9 +67,10 @@ static uint32_t interrupt_handlers[256];
  *  storing them in idt[num].base_hi and base_lo. The rest of the
  *  fields that you must set in idt[num] are fairly self-
  *  explanatory when it comes to setup
-*/
-void idt_set_gate(unsigned char num, unsigned long base,
-		  unsigned short sel, unsigned char flags)
+ */
+
+static void idt_set_gate(unsigned char num, unsigned long base,
+			 unsigned short sel, unsigned char flags)
 {
 	idt[num].base_lo = (base >> 8) & 0xFF;
 	idt[num].base_hi = base & 0xFF;
@@ -86,24 +83,21 @@ void idt_set_gate(unsigned char num, unsigned long base,
 
 static inline void register_interrupt_handler(uint8_t n, uint32_t *handler)
 {
-  interrupt_handlers[n] = handler;
+	interrupt_handlers[n] = handler;
 }
 
 void irq_handler(struct reg_itr regs)
 {
 	eoi(regs.int_no);
-	if (interrupt_handlers[regs.int_no] != 0)
-	{
+	if (interrupt_handlers[regs.int_no] != 0) {
 		// (uint32_t*)handler = interrupt_handlers[regs.int_no];
 		handler(regs);
 	}
 }
 
-extern void (*irq15)(void);
-
 void	init_irqs(void)
 {
-	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
+	idtp.limit = (sizeof(struct idt_entry) * 256) - 1;
 	idtp.base = &idt;
 	memset(&idt, 0, sizeof(struct idt_entry) * 256);
 
@@ -125,6 +119,6 @@ void	init_irqs(void)
 	idt_set_gate(45, irq13, KERNEL_SETUP_ADDR, 0x8E);
 	idt_set_gate(46, irq14, KERNEL_SETUP_ADDR, 0x8E);
 	idt_set_gate(47, irq15, KERNEL_SETUP_ADDR, 0x8E);
-	
+
 	idt_load();
 }

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -34,7 +35,7 @@ void		term_init(struct terminal *term)
 }
 
 static inline void term_putchar_at(struct terminal *term,
-    const char c, const uint8_t color,
+				   const char c, const uint8_t color,
 	const size_t x, const size_t y)
 {
 	term->buffer[y * VGA_WIDTH + x] = vga_entry(c, color);
@@ -45,13 +46,11 @@ static void term_putchar(struct terminal *term, const char c)
 	if (c == '\n') {
 		term->row++;
 		term->column = 0;
-	}
-	else {
+	} else {
 		term_putchar_at(term, c, term->color, term->column, term->row);
 		term->column++;
 	}
-	if (term->column >= VGA_WIDTH)
-	{
+	if (term->column >= VGA_WIDTH) {
 		term->column = 0;
 		term->row++;
 	}

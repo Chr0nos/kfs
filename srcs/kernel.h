@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #ifndef KERNEL_H
 # define KERNEL_H
 
@@ -18,6 +19,7 @@
 #define INTMAX 2147483647
 #define INTMIN -2147483648
 #define CPU_BYTES_MAX sizeof(size_t)
+#define __packed __attribute__((packed))
 
 #define SHORTIFY(x) (((unsigned short)x) | ((unsigned short)x << 8))
 #define INTIFY(x) (((unsigned int)x) | ((unsigned int)x << 16))

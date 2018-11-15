@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #ifndef TERM_H
 # define TERM_H
 
@@ -41,8 +42,8 @@ struct terminal {
 #pragma pack(pop)
 
 void	term_init(struct terminal *term);
-void	    term_puts_rainbow(struct terminal *term, const char *str);
-void        term_putstr(struct terminal *term, const char *str);
+void	term_puts_rainbow(struct terminal *term, const char *str);
+void	term_putstr(struct terminal *term, const char *str);
 void        term_write(struct terminal *term, const char *str, const size_t size);
 void	    term_clear(struct terminal *term, const uint16_t color);
 
