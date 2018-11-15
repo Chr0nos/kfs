@@ -17,6 +17,11 @@
 
 #define INTMAX 2147483647
 #define INTMIN -2147483648
+#define CPU_BYTES_MAX sizeof(size_t)
+
+#define SHORTIFY(x) (((unsigned short)x) | ((unsigned short)x << 8))
+#define INTIFY(x) (((unsigned int)x) | ((unsigned int)x << 16))
+#define LONGIFY(x) (((unsigned long)x) | ((unsigned long x) << 32))
 
 uint32_t	itobuf(const int nb, char *buf, const size_t size);
 size_t		strlen(const char *str);
