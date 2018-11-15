@@ -3,6 +3,7 @@
 #include "kernel.h"
 #include "term.h"
 #include "./gdt/gdt.h"
+#include "irqs/irqs.h"
 
 static void	print_nums(struct terminal *term)
 {
@@ -26,6 +27,8 @@ static void	print_nums(struct terminal *term)
 void kernel_main(void)
 {
 	struct terminal		term;
+
+	irqs_init();
 
 	term_init(&term);
 	term_putstr(&term, "Hello World!\n");

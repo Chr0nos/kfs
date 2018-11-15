@@ -14,12 +14,19 @@
 #define IRQ_COUNT	16
 #define IDT_ENTRIES	256
 
+// probably missing info
+struct reg_itr {
+	unsigned short int_no;
+} __packed;
+
+
 /* This exists in 'start.asm', and is used to load our IDT */
 extern void _idt_load(void);
 extern void _remap_pic(void);
 extern void _eoi(int);
 
-typedef unsigned int irq_t;
+typedef unsigned int	irq_t;
+typedef int		(*irq_handler_t)(struct reg_itr *i);
 
 extern irq_t irq0;
 extern irq_t irq1;
@@ -37,5 +44,7 @@ extern irq_t irq12;
 extern irq_t irq13;
 extern irq_t irq14;
 extern irq_t irq15;
+
+void	irqs_init(void);
 
 #endif
