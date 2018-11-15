@@ -2,7 +2,6 @@
 #include "kernel.h"
 #include "kernel.h"
 #include "term.h"
-#include "./gdt/gdt.h"
 
 static void	print_nums(struct terminal *term)
 {
@@ -34,6 +33,4 @@ void kernel_main(void)
 	term_putstr(&term, "I'm a green line !\n");
 	term_puts_rainbow(&term, "I'm a multicolor line ! it's something !\n");
 	print_nums(&term);
-
-	// init_gdt();
 }
