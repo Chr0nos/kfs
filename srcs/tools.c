@@ -1,8 +1,9 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #include "kernel.h"
 
 /*
-** return the lenght of "x" in chars
-*/
+ * return the lenght of "x" in chars
+ */
 
 uint32_t	nblen(int x)
 {
@@ -17,8 +18,8 @@ uint32_t	nblen(int x)
 }
 
 /*
-** write "nb" into buf until "size" is filled up
-*/
+ * write "nb" into buf until "size" is filled up
+ */
 
 uint32_t	itobuf(const int nb, char *buf, const size_t size)
 {
@@ -31,7 +32,7 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 		return 0;
 	len = nblen(nb);
 	if (len > size)
-        	len = size;
+		len = size;
 	n = len;
 	buf[n--] = '\0';
 	if (nb < 0) {
@@ -41,8 +42,7 @@ uint32_t	itobuf(const int nb, char *buf, const size_t size)
 		x = (uint32_t)nb;
 	if (!x)
 		buf[n--] = '0';
-	while (x)
-	{
+	while (x) {
 		buf[n] = '0' + (x % 10);
 		x /= 10;
 		n--;
@@ -92,7 +92,7 @@ void	*memcpy(void *dest, const void *src, const size_t size)
 
 	for (p = 0; (p < size) && (size - p) % CPU_BYTES_MAX; p++)
 		((unsigned char *)dest)[p] = ((unsigned char *)src)[p];
-	for (;p < size; p += CPU_BYTES_MAX)
+	for (; p < size; p += CPU_BYTES_MAX)
 		*(size_t *)((size_t)dest + p) = *(size_t *)((size_t)src + p);
 	return dest;
 }

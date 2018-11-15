@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #ifndef KERNEL_H
 # define KERNEL_H
 

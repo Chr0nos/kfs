@@ -1,4 +1,4 @@
-
+// SPDX-License-Identifier: GPL-2.0-or-later
 #include "kernel.h"
 #include "kernel.h"
 #include "term.h"
@@ -14,8 +14,7 @@ static void	print_nums(struct terminal *term)
 	term->column = 20;
 	term->color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
 	i = 0;
-	for (i = 0; i < 4; i++)
-	{
+	for (i = 0; i < 4; i++) {
 		len = itobuf(digits[i], test, 30);
 		term_write(term, test, len);
 		term_putstr(term, " -> ");
