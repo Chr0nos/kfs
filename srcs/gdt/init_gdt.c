@@ -54,6 +54,30 @@ void encodeGdtEntry(uint8_t *target, struct gdt_descriptor source)
 // Global Description Table Registers
 static uint8_t gdtr[GDT_LENGTH] = {0};
 
+static struct gdt_descriptor GDT[GDT_LENGTH] = {
+	(struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0,
+		.type = 0
+	},
+	(struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0xffffffff,
+		.type = 0x9a
+	},
+	(struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0xffffffff,
+		.type = 0x92
+	},
+	(struct gdt_descriptor) {
+		.base = 0,
+		.limit = 0x68,
+		.type = 0x89
+	}
+};
+
+
 void init_gdt(void)
 {
 	size_t  i;
