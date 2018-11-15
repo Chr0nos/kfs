@@ -15,9 +15,12 @@ ASM_SRCS=asm/boot.s \
 		gdt/asm/load_gdt.s \
 		gdt/asm/reload_segments.s
 
+ASM_OBJS=$(ASM_SRCS:%.s=%.o)
+
 BUILDDIR=./build
 
-OBJS=$(addprefix $(BUILDDIR)/, $(ASM_SRCS:%.s=%.o) $(SRCS_FILES:%.c=%.o))
+OBJS=$(addprefix $(BUILDDIR)/, $(ASM_OBJS) $(SRCS_FILES:%.c=%.o))
+ASM_OBJS_FULL=$(addprefix $(BUILDDIR)/, $(ASM_OBJS))
 
 all: kernel.bin
 
@@ -31,10 +34,7 @@ objs:
 debug: kernel.bin
 	qemu-system-i386 -kernel kernel.bin --enable-kvm -s -S
 
-$(BUILDDIR)/gdt/asm/%.o: srcs/gdt/asm/%.s
-	$(CCASM) $< -o $@
-
-$(BUILDDIR)/asm/%.o: srcs/asm/%.s
+$(ASM_OBJS_FULL): $(BUILDDIR)/%.o: $(SRCS_DIR)/%.s
 	$(CCASM) $< -o $@
 
 $(BUILDDIR)/%.o: srcs/%.c
@@ -74,3 +74,5 @@ start: kernel.bin
 	qemu-system-x86_64 -kernel kernel.bin
 
 re: fclean all
+
+.PHONY: all re fclean clean start debug objs
