@@ -24,7 +24,7 @@
  
 	#inb(PIC1_DATA);                        # save masks
 	#inb(PIC2_DATA);
-.text 
+.text
 .global _remap_pic
 
 _remap_pic:

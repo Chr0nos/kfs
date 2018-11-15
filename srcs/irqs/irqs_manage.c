@@ -60,7 +60,7 @@ struct reg_itr {
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 
-static uint32_t interrupt_handlers[256];
+static uint32_t *interrupt_handlers[256] = {0};
 
 /* We'll leave you to try and code this function: take the
  *  argument 'base' and split it up into a high and low 16-bits,
@@ -97,28 +97,18 @@ void irq_handler(struct reg_itr regs)
 
 void	init_irqs(void)
 {
+	size_t		i;
+	size_t		port;
+	const irq_t	tab[IRQ_COUNT] = {
+		irq0, irq1, irq2, irq3, irq4, irq5, irq6, irq7,
+		irq8, irq9, irq10, irq11, irq12, irq13, irq14, irq15
+	};
+
 	idtp.limit = (sizeof(struct idt_entry) * 256) - 1;
 	idtp.base = &idt;
-	memset(&idt, 0, sizeof(struct idt_entry) * 256);
-
-	remap_pic();
-
-	idt_set_gate(32, irq0, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(33, irq1, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(34, irq2, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(35, irq3, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(36, irq4, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(37, irq5, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(38, irq6, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(39, irq7, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(40, irq8, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(41, irq9, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(42, irq10, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(43, irq11, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(44, irq12, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(45, irq13, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(46, irq14, KERNEL_SETUP_ADDR, 0x8E);
-	idt_set_gate(47, irq15, KERNEL_SETUP_ADDR, 0x8E);
-
+	_remap_pic();
+	port = 32;
+	for (i = 0; i < IRQ_COUNT; i++)
+		idt_set_gate(port++, tab[i], KERNEL_SETUP_ADDR, 0x8E);
 	idt_load();
 }

@@ -1,23 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "gdt.h"
-#include "kernel.h"
+#include "../kernel.h"
 
 static inline void kerror(const char *str)
 {
 	(void)str;
 }
-
-/*
- * Packed prevent compiler from optimization
- */
-struct gdt_entry {
-	unsigned short limit_low;
-	unsigned short base_low;
-	unsigned char base_middle;
-	unsigned char access;
-	unsigned char granularity;
-	unsigned char base_high;
-} __packed;
 
 /*
  * \param target A pointer to the 8-byte GDT entry

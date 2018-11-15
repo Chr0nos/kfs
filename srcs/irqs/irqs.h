@@ -11,25 +11,29 @@
 #define PIC1_DATA	(PIC1+1)
 #define PIC2_COMMAND	PIC2
 #define PIC2_DATA	(PIC2+1)
+#define IRQ_COUNT	16
 
 /* This exists in 'start.asm', and is used to load our IDT */
 extern void idt_load(void);
+extern void _remap_pic(void);
 
-extern void (*irq0)(void);
-extern void (*irq1)(void);
-extern void (*irq2)(void);
-extern void (*irq3)(void);
-extern void (*irq4)(void);
-extern void (*irq5)(void);
-extern void (*irq6)(void);
-extern void (*irq7)(void);
-extern void (*irq8)(void);
-extern void (*irq9)(void);
-extern void (*irq10)(void);
-extern void (*irq11)(void);
-extern void (*irq12)(void);
-extern void (*irq13)(void);
-extern void (*irq14)(void);
-extern void (*irq15)(void);
+typedef unsigned int irq_t;
+
+extern irq_t irq0;
+extern irq_t irq1;
+extern irq_t irq2;
+extern irq_t irq3;
+extern irq_t irq4;
+extern irq_t irq5;
+extern irq_t irq6;
+extern irq_t irq7;
+extern irq_t irq8;
+extern irq_t irq9;
+extern irq_t irq10;
+extern irq_t irq11;
+extern irq_t irq12;
+extern irq_t irq13;
+extern irq_t irq14;
+extern irq_t irq15;
 
 #endif
