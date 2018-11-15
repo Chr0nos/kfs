@@ -1,6 +1,12 @@
 # reinitialize the PIC controllers, giving them specified vector offsets
 #   rather than 8h and 70h, as configured by default 
  
+.equ PIC1		0x20		/* IO base address for master PIC */
+.equ PIC2		0xA0		/* IO base address for slave PIC */
+.equ PIC1_COMMAND	$PIC1
+.equ PIC1_DATA		$PIC1 + 1
+.equ PIC2_COMMAND	$PIC2
+.equ PIC2_DATA		$PIC2 + 1
 .equ ICW1_ICW4,		0x01		# ICW4 (not) needed 
 .equ ICW1_SINGLE,	0x02		# Single (cascade) mode 
 .equ ICW1_INTERVAL4,	0x04		# Call address interval 4 (8) 
