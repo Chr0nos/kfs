@@ -47,7 +47,7 @@ clean:
 	$(RM) -r $(BUILDDIR)
 
 fclean: clean
-	$(RM) boot kfs.img kfs.iso
+	$(RM) boot kfs.img kfs.iso kernel.bin
 
 kfs.iso: kernel.bin
 	cp -v kernel.bin root/boot/kernel.bin
