@@ -28,8 +28,6 @@ all: kernel.bin
 
 $(BUILDDIR):
 	mkdir -pv $(BUILDDIR)/asm
-	mkdir -pv $(BUILDDIR)/gdt/asm
-	mkdir -pv $(BUILDDIR)/irqs
 
 objs:
 	@echo $(OBJS)
